@@ -13,6 +13,9 @@ A two-line status line for [Claude Code](https://code.claude.com), with a row fo
 
 </div>
 
+> [!CAUTION]
+> This is the `personal` branch, which holds extras built for my own setup, such as a WhatsApp bridge segment that won't work on other machines. Install the [`main`](https://github.com/zachlagden/claude-status-line/tree/main) branch instead, or fork `main` if you want to add segments of your own.
+
 ## What it shows
 
 ### Main status line
