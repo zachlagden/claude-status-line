@@ -1,17 +1,35 @@
+<div align="center">
+
 # claude-status-line
 
-A custom status line for [Claude Code](https://code.claude.com), plus a status line for subagent rows. Plain Node.js, no dependencies.
+A two-line status line for [Claude Code](https://code.claude.com), with a row for each running subagent.
 
-## Main status line
+[![GitHub stars](https://img.shields.io/github/stars/zachlagden/claude-status-line?style=flat&logo=github)](https://github.com/zachlagden/claude-status-line/stargazers)
+[![Last commit](https://img.shields.io/github/last-commit/zachlagden/claude-status-line?style=flat)](https://github.com/zachlagden/claude-status-line/commits/main)
+[![Node.js 18+](https://img.shields.io/badge/node-18%2B-339933?style=flat&logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![No dependencies](https://img.shields.io/badge/dependencies-none-blue?style=flat)](#install)
 
-Two lines, which drop their lowest-priority segments when the terminal is too narrow.
+<img src="assets/screenshot.png" alt="Claude Code with the status line and two subagent rows" width="100%">
 
-- Top line: model, effort and fast mode, project folder (linked to its repo), git branch with dirty, ahead and behind markers, pull request and review state, worktree, agent name and the clock.
-- Bottom line: context bar measured against the auto-compact threshold, 5-hour, 7-day and spend limits with reset times, session cost and duration, prompt cache time left, lines added and removed, and time since your last prompt.
+</div>
 
-## Subagent status line
+## What it shows
 
-One row per running subagent: its name, the tool call it's running now, a context bar with token count, and its model, effort and elapsed time.
+### Main status line
+
+When the terminal is too narrow, each line drops its lowest-priority segments first.
+
+| Line | Segments |
+|---|---|
+| Top | Model, effort and fast mode, project folder (linked to its repo), git branch with dirty, ahead and behind markers, pull request and review state, worktree, agent name, clock |
+| Bottom | Context bar measured against the auto-compact threshold, 5-hour, 7-day and spend limits with reset times, session cost and duration, prompt cache time left, lines added and removed, time since your last prompt |
+
+### Subagent rows
+
+One row per subagent: its name, the tool call it's running now, a context bar with its token count, and its model, effort and elapsed time.
+
+> [!WARNING]
+> The subagent rows misbehave with [Agent Teams](https://code.claude.com/docs/en/agent-teams) turned on (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`).
 
 ## Install
 
@@ -37,12 +55,8 @@ Add this to `~/.claude/settings.json`:
 }
 ```
 
-It needs Node.js 18 or later, plus `git` and `curl` on the `PATH`.
-
-## WhatsApp bridge segment
-
-The top line shows a red warning when a local WhatsApp MCP bridge is down, logged out or not running. It checks `http://127.0.0.1:8080/api/health` by default; set `WHATSAPP_BRIDGE_HEALTH_URL` to point it elsewhere. If you don't run a bridge, remove `whatsappSegment()` from the `top` list in `statusline.js`.
+It needs Node.js 18 or later, with `git` on the `PATH`.
 
 ## Caching
 
-Git status is cached for 5 seconds and the bridge check for 10 seconds, in files under the system temp directory.
+Git status is cached for 5 seconds in a file under the system temp directory, so a refresh every 5 seconds runs `git status` at most once per folder.
