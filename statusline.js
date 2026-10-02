@@ -3,7 +3,6 @@ const path = require('path');
 const f = require('./lib/format');
 const { gitStatus } = require('./lib/git');
 const { lastPromptAt } = require('./lib/transcript');
-const { whatsappState } = require('./lib/whatsapp');
 
 const SEPARATOR = f.paint(f.DIM, ' │ ');
 const RIGHT_MARGIN = 4;
@@ -72,11 +71,6 @@ function worktreeSegment(data) {
 
 function agentSegment(data) {
   return data.agent?.name ? f.paint(f.YELLOW, `@${data.agent.name}`) : null;
-}
-
-function whatsappSegment() {
-  const state = whatsappState();
-  return state.ok ? null : f.paint(f.RED, `WhatsApp ${state.label}`);
 }
 
 function clockSegment() {
@@ -160,7 +154,6 @@ function fitLine(segments, width) {
 function render(data) {
   const width = (parseInt(process.env.COLUMNS || '0', 10) || 0) - RIGHT_MARGIN;
   const top = [
-    { priority: 0, text: whatsappSegment() },
     { priority: 0, text: modelSegment(data) },
     { priority: 0, text: folderSegment(data) },
     { priority: 1, text: gitSegment(data) },
